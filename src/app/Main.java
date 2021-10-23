@@ -8,8 +8,13 @@ import persistence.RandomAccessPersistence;
 import persistence.SequencialBinaryPersistence;
 import persistence.SerializablePersistence;
 import persistence.TextPersistence;
+import search.IterativeBinarySearch;
+import search.RecursiveBinarySearch;
+import search.Search;
+import search.SequencialSearch;
 import sort.BubbleSort;
 import sort.InsertionSort;
+import sort.QuickSort;
 import sort.SelectionSort;
 import sort.Sort;
 
@@ -22,6 +27,9 @@ public class Main
         int menuOption;
         InterfaceIO dataFile;
         Sort sortMethod;
+        Search searchMethod;
+        String productName;
+        int productPosition;
         
         System.out.println("Programa simulando um controle simples de estoque em arquivo.");
         System.out.print("Entre com o nome do arquivo a ser trabalhado (<enter> para default):");
@@ -62,39 +70,96 @@ public class Main
         do
         {
             System.out.println("\n#################################");
-            System.out.println("1 - Incluir\n2 - Listar\n3 - Ordenar (Bolha)\n4 - Ordenar (Inserção)\n5 - Ordenar (Seleção)\n6 - Finalizar\nEntre com a sua opção:");
+            System.out.println("11 - Incluir\n12 - Listar"
+                    + "\n21 - Ordenar (Bolha)\n22 - Ordenar (Inserção)\n23 - Ordenar (Seleção)\n24 - Orderner (Quick)"
+                    + "\n31 - Busca (Sequencial)\n32 - Busca (Binaria Recursiva)\n33 - Busca (Binaria Iterativa)"
+                    + "\n0 - Finalizar\nEntre com a sua opção:");
             menuOption = input.nextInt();
             System.out.println("#################################");
             
-            if(menuOption == 1)
+            if(menuOption == 11)
             {
                 Product newProduct = newProduct();
                 stock.addProduct(newProduct);
             }
-            if(menuOption == 2)
+            if(menuOption == 12)
             {
                 productList(stock);
             }
-            if(menuOption == 3)
+            if(menuOption == 21)
             {
                 sortMethod = new BubbleSort();
                 stock = sortMethod.sort(stock);
                 System.out.println("Ordenado com sucesso!");
             }
-            if(menuOption == 4)
+            if(menuOption == 22)
             {
                 sortMethod = new InsertionSort();
                 stock = sortMethod.sort(stock);
                 System.out.println("Ordenado com sucesso!");
             }
-            if(menuOption == 5)
+            if(menuOption == 23)
             {
                 sortMethod = new SelectionSort();
                 stock = sortMethod.sort(stock);
                 System.out.println("Ordenado com sucesso!");
             }
+            if(menuOption == 24)
+            {
+                sortMethod = new QuickSort();
+                stock = sortMethod.sort(stock);
+                System.out.println("Ordenado com sucesso!");
+            }
+            if(menuOption == 31)
+            {
+                searchMethod = new SequencialSearch();
+                System.out.println("\nEntre com o nome do produto a ser buscado.");
+                productName = input.next();
+                productPosition = searchMethod.search(stock, productName);
+                
+                if(productPosition == -1)
+                {
+                    System.out.println("Produto não encontrado!");
+                }
+                else
+                {
+                    System.out.println("Produto encontrado na posição: " + ++productPosition);
+                }
+            }
+            if(menuOption == 32)
+            {
+                searchMethod = new RecursiveBinarySearch();
+                System.out.println("\nEntre com o nome do produto a ser buscado.");
+                productName = input.next();
+                productPosition = searchMethod.search(stock, productName);
+                
+                if(productPosition == -1)
+                {
+                    System.out.println("Produto não encontrado!");
+                }
+                else
+                {
+                    System.out.println("Produto encontrado na posição: " + ++productPosition);
+                }
+            }
+            if(menuOption == 33)
+            {
+                searchMethod = new IterativeBinarySearch();
+                System.out.println("\nEntre com o nome do produto a ser buscado.");
+                productName = input.next();
+                productPosition = searchMethod.search(stock, productName);
+                
+                if(productPosition == -1)
+                {
+                    System.out.println("Produto não encontrado!");
+                }
+                else
+                {
+                    System.out.println("Produto encontrado na posição: " + ++productPosition);
+                }
+            }
         }
-        while(menuOption < 6);
+        while(menuOption != 0);
             
         dataFile.writeData(stock, fileName);
         System.out.println("Fim do programa.");
